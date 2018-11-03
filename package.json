@@ -1,0 +1,31 @@
+{
+  "name": "kitchen-display-system-be",
+  "version": "1.0.0",
+  "description": "This system can be used in Kitchen of various restaurants, where there are daily predictions of orders, orders made, prepared items, etc details.",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon --inspect",
+    "sync": "node src/scripts/sync.js",
+    "addDishes": "node src/scripts/addDishes.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ratnam995/kitchen-display-system-BE.git"
+  },
+  "author": "Kumar Ratnam Pandey",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ratnam995/kitchen-display-system-BE/issues"
+  },
+  "homepage": "https://github.com/ratnam995/kitchen-display-system-BE#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "lodash": "^4.17.10",
+    "pg": "^6.1.0",
+    "sequelize": "^4.38.0",
+    "sequelize-fixtures": "^0.7.0",
+    "socket.io": "^2.1.1"
+  }
+}
