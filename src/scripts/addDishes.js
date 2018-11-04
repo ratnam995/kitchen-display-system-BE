@@ -3,34 +3,34 @@ const models = require("../models");
 async function saveDataToDB() {
   let dishes = [
     {
-      dishTag: "ngv-chwr-ch",
-      dishName: "Chicken Wrap",
+      dishtag: "ngv-chwr-ch",
+      dishname: "Chicken Wrap",
       cuisine: "Chinese",
-      createdTillNow: 0
+      createdtillnow: 0
     },
     {
-      dishTag: "ngv-chla-co",
-      dishName: "Chicken Lasagne",
+      dishtag: "ngv-chla-co",
+      dishname: "Chicken Lasagne",
       cuisine: "Continental",
-      createdTillNow: 0
+      createdtillnow: 0
     },
     {
-      dishTag: "vg-pawr-ch",
-      dishName: "Paneer Wrap",
+      dishtag: "vg-pawr-ch",
+      dishname: "Paneer Wrap",
       cuisine: "Chinese",
-      createdTillNow: 0
+      createdtillnow: 0
     },
     {
-      dishTag: "vg-albu-ch",
-      dishName: "Roasted Potato Tikka Burger",
+      dishtag: "vg-albu-ch",
+      dishname: "Roasted Potato Tikka Burger",
       cuisine: "Chinese",
-      createdTillNow: 0
+      createdtillnow: 0
     },
     {
-      dishTag: "ngv-chbir-mu",
-      dishName: "Chicken Biryani",
+      dishtag: "ngv-chbir-mu",
+      dishname: "Chicken Biryani",
       cuisine: "Mughlai",
-      createdTillNow: 0
+      createdtillnow: 0
     }
   ];
   await fillDishesTable(dishes);
@@ -41,12 +41,12 @@ const fillDishesTable = dishes =>
     try {
         console.log("check", dishes);
       const promisesArr = await Promise.all(
-        dishes.map(async ({ dishTag, dishName, cuisine, createdTillNow }) => {
+        dishes.map(async ({ dishtag, dishname, cuisine, createdtillnow }) => {
           const record = await models.Dish.create({
-            dishTag,
-            dishName,
+            dishtag,
+            dishname,
             cuisine,
-            createdTillNow
+            createdtillnow
           });
 
           return true;

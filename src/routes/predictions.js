@@ -6,8 +6,9 @@ module.exports = function(app) {
     let record = {};
     try {
       let reqObj = {
-        dishTag: req.body.dishTag,
-        predictedQty: req.body.qty
+        dishtag: req.body.dishTag,
+        dish_id: req.body.dishId,
+        predictedqty: req.body.qty
       };
       record = await models.Prediction.create(reqObj);
     } catch (e) {
