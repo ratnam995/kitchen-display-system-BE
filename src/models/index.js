@@ -1,10 +1,10 @@
-const fs = require('fs');
-const path = require('path');
-const Sequelize = require('sequelize');
+const fs = require("fs");
+const path = require("path");
+const Sequelize = require("sequelize");
 
 const basename = path.basename(module.filename);
 
-const env = process.env.NODE_ENV || 'development';
+const env = process.env.NODE_ENV || "development";
 
 const config = require(`${__dirname}/../config/config.json`)[env]; // eslint-disable-line
 
@@ -12,18 +12,14 @@ const db = {};
 
 console.log("this config", config);
 
-const sequelize = new Sequelize(
-  config.database,
-  config.username,
-  config.password,
-  config,
-  config.logging
-);
+const sequelize = new Sequelize("kdsdb", "postgres", "postgres", {
+  dialect: "postgres"
+});
 
 fs.readdirSync(__dirname)
   .filter(
     file =>
-      file.indexOf('.') !== 0 && file !== basename && file.slice(-3) === '.js'
+      file.indexOf(".") !== 0 && file !== basename && file.slice(-3) === ".js"
   )
   .forEach(file => {
     const model = sequelize.import(path.join(__dirname, file));
