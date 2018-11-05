@@ -10,6 +10,8 @@ const config = require(`${__dirname}/../config/config.json`)[env]; // eslint-dis
 
 const db = {};
 
+console.log("this config", config);
+
 const sequelize = new Sequelize(
   config.database,
   config.username,
