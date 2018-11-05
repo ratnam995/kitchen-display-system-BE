@@ -64,7 +64,7 @@ module.exports = function(app, io) {
     pdf
       .create(htmlString, options)
       .toFile(
-        rootDir + "/summary-reports/summary_" + timeStamp + ".pdf",
+        rootDir + "/kitchen-reports/kitchen_" + timeStamp + ".pdf",
         (err, resp) => {
           console.log(
             "sendEmail: PDF is generated ...  err, resp -->",
@@ -72,7 +72,7 @@ module.exports = function(app, io) {
             resp
           );
           let file = path.join(
-            rootDir + "/summary-reports/summary_" + timeStamp + ".pdf"
+            rootDir + "/kitchen-reports/kitchen_" + timeStamp + ".pdf"
           );
           console.log("file path", file);
           res.contentType("application/pdf");
