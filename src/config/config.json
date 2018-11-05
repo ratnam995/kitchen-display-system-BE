@@ -1,9 +1,10 @@
 {
-    "development": {
-      "database": "kdsDB",
-      "host": "127.0.0.1",
-      "port": "5432",
-      "dialect": "postgres",
-      "logging": false
-    }
+  "development": {
+    "database": "kdsDB",
+    "host": "127.0.0.1",
+    "port": "5432",
+    "dialect": "postgres",
+    "username": "pstgres",
+    "logging": false
+  }
 }
