@@ -6,11 +6,7 @@ const basename = path.basename(module.filename);
 
 const env = process.env.NODE_ENV || "development";
 
-const config = require(`${__dirname}/../config/config.json`)[env]; // eslint-disable-line
-
 const db = {};
-
-console.log("this config", config);
 
 const sequelize = new Sequelize("kdsdb", "postgres", "postgres", {
   dialect: "postgres"
