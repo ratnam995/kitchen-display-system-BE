@@ -61,30 +61,34 @@ module.exports = function(app, io) {
       .replace(/\./g, "")
       .replace(/-\s*/g, "");
     console.log("sendEmail: timeStamp -->", timeStamp, rootDir);
-    pdf
-      .create(htmlString, options)
-      .toFile(
-        rootDir + "/kitchen-reports/kitchen_" + timeStamp + ".pdf",
-        (err, resp) => {
-          console.log(
-            "sendEmail: PDF is generated ...  err, resp -->",
-            err,
-            resp
-          );
-          let file = path.join(
-            rootDir + "/kitchen-reports/kitchen_" + timeStamp + ".pdf"
-          );
-          console.log("file path", file);
-          res.contentType("application/pdf");
-          res.download(file, function(err) {
-            if (err) {
-              console.log("Error");
-              console.log(err);
-            } else {
-              console.log("Success");
-            }
-          });
-        }
-      );
+    try {
+      pdf
+        .create(htmlString, options)
+        .toFile(
+          rootDir + "/kitchen-reports/kitchen_" + timeStamp + ".pdf",
+          (err, resp) => {
+            console.log(
+              "sendEmail: PDF is generated ...  err, resp -->",
+              err,
+              resp
+            );
+            let file = path.join(
+              rootDir + "/kitchen-reports/kitchen_" + timeStamp + ".pdf"
+            );
+            console.log("file path", file);
+            res.contentType("application/pdf");
+            res.download(file, function(err) {
+              if (err) {
+                console.log("Error");
+                console.log(err);
+              } else {
+                console.log("Success");
+              }
+            });
+          }
+        );
+    } catch (e) {
+      res.send({ message: "Error", success: false });
+    }
   });
 };
