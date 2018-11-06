@@ -1,9 +1,9 @@
 const models = require("../models");
-const { dishPredictionFuncs } = require('../common/dishPrediction');
+const { dishPredictionFuncs } = require("../common/dishPredictionFuncs");
 
 module.exports = function(app, io) {
   app.post("/placeOrder", async (req, res) => {
-    console.log("req in placeOrder===>", req);
+    // console.log("req in placeOrder===>", req);
     let record = {};
     try {
       let reqObj = {
@@ -14,14 +14,14 @@ module.exports = function(app, io) {
       };
       record = await models.Orderdetail.create(reqObj);
     } catch (e) {
-      console.log("Order not done");
+      // console.log("Order not done");
       res.send({
         message: "Order can not be placed. Try again.",
         success: false
       });
     }
     if (record && Object.keys(record).length) {
-      console.log("Order is placed", record);
+      // console.log("Order is placed", record);
       let fetchedDishDetail = await dishPredictionFuncs.fetchDataFromDishAndPredictionModel(
         record.dataValues.dishtag
       );
@@ -30,7 +30,7 @@ module.exports = function(app, io) {
         record.dataValues,
         fetchedDishDetail
       );
-      console.log("socketResponse", socketResponse);
+      // console.log("socketResponse", socketResponse);
       io.emit("OrderPlaced", socketResponse);
       res.send({ message: "Order Placed Successfully.", success: true });
     }
@@ -47,16 +47,12 @@ module.exports = function(app, io) {
       try {
         let promiseArr = await Promise.all(
           orderList.map(async singleOrder => {
-            // console.log("fetchedDish 2");
             let fetchedDishDetail = await dishPredictionFuncs.fetchDataFromDishAndPredictionModel(
               singleOrder.dishtag
             );
-            // console.log("fetchedDish 3", fetchedDishDetail);
             response.push(Object.assign({}, singleOrder, fetchedDishDetail));
-            // }
           })
         );
-        // console.log("response", response);
         res.send(response);
       } catch (e) {
         // console.log("error", e);
@@ -70,7 +66,6 @@ module.exports = function(app, io) {
   });
 
   app.post("/completeOrder", async (req, res) => {
-    console.log("req", req);
     let reqObj = {};
     let dishTag = req.body.dishtag;
     let qty = parseInt(req.body.qty);
@@ -82,7 +77,6 @@ module.exports = function(app, io) {
         )
       );
       let ctn = parseInt(dishData.createdtillnow) + qty;
-      console.log("dishData", dishData, qty, ctn);
       let upCount = await models.sequelize.query(
         `UPDATE "Dishes" SET createdtillnow= :ctn WHERE id = :dishID`,
         {
@@ -94,9 +88,7 @@ module.exports = function(app, io) {
           type: models.sequelize.QueryTypes.UPDATE
         }
       );
-      console.log("upCount 1", JSON.parse(JSON.stringify(upCount)));
       if (upCount && upCount.length && upCount[1]) {
-        console.log("upCount 1");
         upCount = await models.sequelize.query(
           `UPDATE "Orderdetails" SET status= :status WHERE id = :orderID`,
           {
@@ -107,11 +99,7 @@ module.exports = function(app, io) {
             type: models.sequelize.QueryTypes.UPDATE
           }
         );
-        console.log("upCount", JSON.parse(JSON.stringify(upCount)));
         if (upCount && upCount.length && upCount[1]) {
-          // let newRec = JSON.parse(JSON.stringify(req.body));
-          // newRec.createdtillnow = ctn;
-          // newRec.status = true;
           let orderDetail = await models.sequelize.query(
             `SELECT * FROM "Orderdetails" WHERE id = :orderID`,
             {
@@ -122,9 +110,10 @@ module.exports = function(app, io) {
             }
           );
 
-          let fetchedData = await dishPredictionFuncs.fetchDataFromDishAndPredictionModel(dishTag);
+          let fetchedData = await dishPredictionFuncs.fetchDataFromDishAndPredictionModel(
+            dishTag
+          );
           let newRec = Object.assign({}, orderDetail[0], fetchedData);
-          console.log("newRec", JSON.parse(JSON.stringify(newRec)));
           io.emit("OrderCompleted", newRec);
           res.send({
             message: "OrderCompleted.",
@@ -151,5 +140,3 @@ module.exports = function(app, io) {
     }
   });
 };
-
-

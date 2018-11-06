@@ -20,9 +20,5 @@ module.exports = (sequelize, DataTypes) => {
     });
   };
 
-  // Dish.associate = function(models) {
-
-  // };
-
   return Dish;
 };

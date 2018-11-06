@@ -1,6 +1,6 @@
 const pdf = require("html-pdf");
 var path = require("path");
-const { dishPredictionFuncs } = require("../common/dishPrediction");
+const { dishPredictionFuncs } = require("../common/dishPredictionFuncs");
 const srcDir = __dirname;
 const rootDir = srcDir.substring(0, srcDir.lastIndexOf("src") - 1);
 var options = {
@@ -12,8 +12,6 @@ module.exports = function(app, io) {
   app.post("/downloadpdf", async (req, res) => {
     let htmlString = "";
     let fetchedData = await dishPredictionFuncs.fetchAllDataFromDishAndPredictionModel();
-    console.log("fetched data in download pdf", fetchedData);
-    console.log("fetched data in download pdf", fetchedData.length);
     if (fetchedData.length > 0) {
       let headerList = [
         { header: "Dish Name", mapTo: "dishname" },
@@ -54,41 +52,34 @@ module.exports = function(app, io) {
         "<html><body style='font-size: 1.0em;'backgournd:blue;>No records found to generate report</body></html>";
     }
 
-    console.log("HTML STRING", htmlString);
-    let timeStamp = new Date().toISOString();
+    let timeStamp = new Date().toISOString(); //To create new reports file
     timeStamp = timeStamp
       .replace(/:\s*/g, "")
       .replace(/\./g, "")
       .replace(/-\s*/g, "");
-    console.log("sendEmail: timeStamp -->", timeStamp, rootDir);
     try {
       pdf
         .create(htmlString, options)
         .toFile(
           rootDir + "/kitchen-reports/kitchen_" + timeStamp + ".pdf",
           (err, resp) => {
-            console.log(
-              "sendEmail: PDF is generated ...  err, resp -->",
-              err,
-              resp
-            );
+            // console.log("downloadPDF: PDF is generated ...  err, resp -->", err, resp);
             let file = path.join(
               rootDir + "/kitchen-reports/kitchen_" + timeStamp + ".pdf"
             );
-            console.log("file path", file);
             res.contentType("application/pdf");
             res.download(file, function(err) {
               if (err) {
-                console.log("Error");
-                console.log(err);
+                // console.log("Error");
+                // console.log(err);
               } else {
-                console.log("Success");
+                // console.log("Success");
               }
             });
           }
         );
     } catch (e) {
-      res.send({ message: "Error", success: false });
+      res.send({ message: "Error while generating pdf.", success: false });
     }
   });
 };

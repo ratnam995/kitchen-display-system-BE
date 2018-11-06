@@ -27,9 +27,7 @@ fs.readdirSync(__dirname)
   });
 
 Object.keys(db).forEach(modelName => {
-  console.log("modelName 1", modelName);
   if (db[modelName].associate) {
-    console.log("modelName 2", modelName);
     db[modelName].associate(db);
   }
 });

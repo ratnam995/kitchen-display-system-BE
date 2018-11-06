@@ -39,7 +39,6 @@ async function saveDataToDB() {
 const fillDishesTable = dishes =>
   new Promise(async (resolve, reject) => {
     try {
-        console.log("check", dishes);
       const promisesArr = await Promise.all(
         dishes.map(async ({ dishtag, dishname, cuisine, createdtillnow }) => {
           const record = await models.Dish.create({
@@ -59,32 +58,32 @@ const fillDishesTable = dishes =>
     }
   });
 
-  async function save() {
-    console.log(
-      "Started Saving data-------------------------------------------------------------- : "
+async function save() {
+  console.log(
+    "Started Saving data-------------------------------------------------------------- : "
+  );
+  try {
+    await saveDataToDB();
+  } catch (e) {
+    console.error(
+      e,
+      "!!!!!!!!!!!!!!!!!!!error in saving save()!!!!!!!!!!!!!!!!!!!!!!!!!"
     );
-    try {
-      await saveDataToDB();
-    } catch (e) {
-      console.error(
-        e,
-        "!!!!!!!!!!!!!!!!!!!error in saving save()!!!!!!!!!!!!!!!!!!!!!!!!!"
-      );
-    }
-  
-    console.log(
-      "Finished saving to db >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
-    );
-  
-    process.exit(0);
   }
-  
-  save();
-  
-  process.on("unhandledRejection", err => {
-    console.log("Unhandled rejection", err);
-  });
-  
-  process.on("uncaughtException", err => {
-    console.log("Uncaught exception", err);
-  });
+
+  console.log(
+    "Finished saving to db >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
+  );
+
+  process.exit(0);
+}
+
+save();
+
+process.on("unhandledRejection", err => {
+  console.log("Unhandled rejection", err);
+});
+
+process.on("uncaughtException", err => {
+  console.log("Uncaught exception", err);
+});
